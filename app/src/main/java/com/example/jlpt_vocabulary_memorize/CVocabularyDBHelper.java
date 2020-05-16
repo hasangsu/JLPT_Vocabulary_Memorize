@@ -6,22 +6,47 @@ import android.database.DatabaseErrorHandler;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class CVocabularyDBHelper {
 
     private static final String m_dbName = "vocabulary_db";
-    private static final String m_dbTable = "vocabulary_jlpt1";
+    private static final String m_dbTable = "vocabulary_jlpt";
     private static final int m_dbVersion = 1;
+
+    public int m_jlptLevel = 0;
+    public int m_jlptNo = 0;
 
     private COpenHelper m_openHelper;
     private SQLiteDatabase m_db;
     private Context m_context;
+
+    public int getM_jlptLevel() {
+        return m_jlptLevel;
+    }
+
+    public void setM_jlptLevel(int m_jlptLevel) {
+        this.m_jlptLevel = m_jlptLevel;
+    }
+
+    public int getM_jlptNo() {
+        return m_jlptNo;
+    }
+
+    public void setM_jlptNo(int m_jlptNo) {
+        this.m_jlptNo = m_jlptNo;
+    }
 
     public void requestInsertVocabulary(Map<String, String> vocabulary_map)
     {
@@ -32,6 +57,10 @@ public class CVocabularyDBHelper {
     public ArrayList<CVocabulary> requestCheckAllVocabulary()
     {
         return m_openHelper.checkAllVocabulary();
+    }
+
+    public void requestExportDBFile()
+    {
     }
 
     public CVocabularyDBHelper(Context context)
@@ -57,17 +86,17 @@ public class CVocabularyDBHelper {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            // create DB Table.
-            String sql = "CREATE TABLE " + m_dbTable + " (" +
-                         //"indexId integer primary key autoincrement, " +
-                         "kanji varchar(30), " +
-                         "kana varchar(30), " +
-                         "english varchar(30), " +
-                         "romaji varchar(30), " +
-                         "katakana varchar(30), " +
-                         "hiragana varchar(30));";
+                String sql = "CREATE TABLE " + m_dbTable + " (" +
+                        "tango_level integer, " +
+                        "tango_no integer, " +
+                        "kanji varchar(30), " +
+                        "kana varchar(30), " +
+                        "english varchar(30), " +
+                        "romaji varchar(30), " +
+                        "katakana varchar(30), " +
+                        "hiragana varchar(30));";
 
-            db.execSQL(sql);
+                db.execSQL(sql);
         }
 
         @Override
@@ -77,14 +106,11 @@ public class CVocabularyDBHelper {
             onCreate(db);
         }
 
-        public void createDB1()
-        {
-            int a  = 1;
-
-        }
         // insert vocabulary DB Table.
         public void insertVocabulary(Map<String, String> vocabulary_map)
         {
+                int tango_level = m_jlptLevel;
+                int tango_no = m_jlptNo;
                 String kanji = vocabulary_map.get("Kanji");
                 String kana = vocabulary_map.get("Kana");
                 String english = vocabulary_map.get("English");
@@ -92,7 +118,8 @@ public class CVocabularyDBHelper {
                 String katakana = vocabulary_map.get("Katakana");
                 String hiragana = vocabulary_map.get("Hiragana");
 
-                String sql = "insert into " + m_dbTable + " values" + "('" + kanji + "','" + kana + "','" + english + "','" + romaji + "','" + katakana + "','" + hiragana + "');";
+                String sql = "insert into " + m_dbTable + " values" + "(" + tango_level + "," + tango_no  + ",'" + kanji + "','" + kana + "','" + english + "','" + romaji + "','" + katakana + "','" + hiragana + "');";
+                m_jlptNo++;
                 m_db.execSQL(sql);
         }
 
@@ -110,14 +137,16 @@ public class CVocabularyDBHelper {
             {
                 int column_count = result.getColumnCount();
 
-                String kanji = result.getString(0);
-                String kana = result.getString(1);
-                String english = result.getString(2);
-                String romaji = result.getString(3);
-                String katakana = result.getString(4);
-                String hiragana = result.getString(5);
+                int tango_level = result.getInt(0);
+                int tango_no = result.getInt(1);
+                String kanji = result.getString(2);
+                String kana = result.getString(3);
+                String english = result.getString(4);
+                String romaji = result.getString(5);
+                String katakana = result.getString(6);
+                String hiragana = result.getString(7);
 
-                CVocabulary vocabulary = new CVocabulary(0, kanji, kana, english, romaji, katakana, hiragana);
+                CVocabulary vocabulary = new CVocabulary(tango_level, tango_no, kanji, kana, english, romaji, katakana, hiragana);
                 vocabularyList.add(vocabulary);
                 result.moveToNext();
             }

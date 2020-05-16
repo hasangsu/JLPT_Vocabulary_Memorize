@@ -2,7 +2,8 @@ package com.example.jlpt_vocabulary_memorize;
 
 public class CVocabulary {
 
-    private int m_index;
+    private int m_level = 0;
+    private int m_tangNo = 0;
     private String m_kanji = "";
     private String m_kana = "";
     private String m_english = "";
@@ -10,12 +11,20 @@ public class CVocabulary {
     private String m_katakana = "";
     private String m_hiragana = "";
 
-    public int getM_index() {
-        return m_index;
+    public int getM_level() {
+        return m_level;
     }
 
-    public void setM_index(int m_index) {
-        this.m_index = m_index;
+    public void setM_level(int m_level) {
+        this.m_level = m_level;
+    }
+
+    public int getM_tangNo() {
+        return m_tangNo;
+    }
+
+    public void setM_tangNo(int m_tangNo) {
+        this.m_tangNo = m_tangNo;
     }
 
     public String getM_kanji() {
@@ -66,9 +75,10 @@ public class CVocabulary {
         this.m_hiragana = m_hiragana;
     }
 
-    public CVocabulary(int indexId, String kanji, String kana, String english, String romaji, String katakana, String hiragana)
+    public CVocabulary(int level, int no, String kanji, String kana, String english, String romaji, String katakana, String hiragana)
     {
-        this.m_index = indexId;
+        this.m_level = level;
+        this.m_tangNo = no;
         this.m_kanji = kanji;
         this.m_kana = kana;
         this.m_english = english;

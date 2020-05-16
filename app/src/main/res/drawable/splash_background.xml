@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- splash default background color -->
+    <item android:drawable="@color/colorWhite" />
+
+    <!-- splash default background image -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/splash_logo_image1"/>
+    </item>
+
+</layer-list>

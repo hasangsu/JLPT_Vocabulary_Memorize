@@ -18,13 +18,11 @@ import java.util.Map;
 
 public class CVocabularyParser {
 
-    void vocabulary_file_parsing(Resources resources, CVocabularyDBHelper vocabularyDBHelper)
+    void vocabulary_file_parsing(Resources resources, int level, CVocabularyDBHelper vocabularyDBHelper)
     {
         String TAG = "XML";
 
-        Log.i(TAG, "parser()");
-
-        InputStream inputStream = resources.openRawResource(R.raw.jlpt1);
+        InputStream inputStream = resources.openRawResource(level);
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader reader = new BufferedReader(inputStreamReader);
 
