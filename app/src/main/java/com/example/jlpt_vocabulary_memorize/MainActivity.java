@@ -1,70 +1,81 @@
 package com.example.jlpt_vocabulary_memorize;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.AttributeSet;
 import android.view.View;
 
 import com.example.jlpt_vocabulary_memorize.CVocabularyParser;
+import com.example.jlpt_vocabulary_memorize.Fragments.CFragment;
 
 import java.io.File;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public static CVocabularyDBHelper m_vocabularyDBHelper;
+    private ViewPager m_viewPager;
+    private PagerAdapter m_pageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                switch (v.getId()) {
-                    case R.id.button1:
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                        builder.setTitle("버튼 클릭 테스트 다이얼로그");
-//                        builder.setMessage("Export DB Button을 클릭하셨습니다.");
-//                        builder.setPositiveButton("예", null);
-//                        builder.setNegativeButton("아니오", null);
-//                        builder.setNeutralButton("취소", null);
-//                        builder.create().show();
-                        break;
-                }
-            }
-        };
+        // [0] 처음실행시 DB 데이터가 있는지 확인.
+        // 현재는 사용하지 않음.
+//        if (false)
+//        {
+//            // [0-1] 처음 실행 시, Vocabulary Create DB (JLPT 1 ~ 5).
+//            m_vocabularyDBHelper = new CVocabularyDBHelper(MainActivity.this);
+//
+//            // [0-2] XML 파싱, Vocabulary Insert DB (JLPT 1 ~ 5).
+//            for (int level = 0 ; level < 5; level++)
+//            {
+//                int resourceId = R.raw.jlpt1;
+//                resourceId += level;
+//
+//                // [0-3] JLPT 급수별로 급수 및 단어 순서 세팅해주기.
+//                m_vocabularyDBHelper.setM_jlptLevel(level + 1);
+//                m_vocabularyDBHelper.setM_jlptNo(1);
+//                vocabulary_parsing(super.getResources(), resourceId);
+//
+//                // [0-4] XML 파싱, Vocabulary 리스트 결과 확인.
+//                ArrayList<CVocabulary> vocabularyList = new ArrayList<> ();
+//                vocabularyList = m_vocabularyDBHelper.requestCheckAllVocabulary();
+//            }
+//        }
 
-        findViewById(R.id.button1).setOnClickListener(listener);
-
-        // 아래 실행안하도록 함.
-        if (false)
+        // [1] 처음실행되면 Splash 이후에 보여질 JLPT 급수 선택 리스트 생성.
+        List<Fragment> fragmentList = new ArrayList<>();
+        for (int index = 5; 1 <= index; index--)
         {
-            // 처음 실행 시, Vocabulary Create DB (JLPT 1 ~ 5).
-            m_vocabularyDBHelper = new CVocabularyDBHelper(MainActivity.this);
+            // [1-1] 화면에서 선택할 수 있는 JLPT 급수 생성 및 텍스트 세팅.
+            CFragment fragment = new CFragment();
+            fragment.setM_level(index);
 
-            // XML 파싱, Vocabulary Insert DB (JLPT 1 ~ 5).
-            for (int level = 0 ; level < 5; level++)
-            {
-                int resourceId = R.raw.jlpt1;
-                resourceId += level;
-
-                m_vocabularyDBHelper.setM_jlptLevel(level + 1);
-                m_vocabularyDBHelper.setM_jlptNo(1);
-                vocabulary_parsing(super.getResources(), resourceId);
-
-                // XML 파싱, Vocabulary 리스트 결과 확인.
-                ArrayList<CVocabulary> vocabularyList = new ArrayList<> ();
-                vocabularyList = m_vocabularyDBHelper.requestCheckAllVocabulary();
-            }
+            // [1-2] 생성한 JLPT 급수를 fragmentList에 더함.
+            fragmentList.add(fragment);
         }
+
+        // [1-4] Main Activity에서 사용할 viewPager 생성 및 세팅.
+        m_viewPager = findViewById(R.id.viewPager);
+        m_pageAdapter = new CViewPagerAdapter(getSupportFragmentManager(), fragmentList);
+
+        m_viewPager.setAdapter(m_pageAdapter);
     }
 
     public static void vocabulary_parsing(Resources resources, int level) {
