@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,8 +30,28 @@ public class CFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        // [0] Fragment 생성되어질 때.
+        // [0] Fragment 생성되어질 때 View 생성.
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.activity_jlpt_level_page, container, false);
+
+        // [1] 생성된 View에 ImageButton을 찾아와서 Click Event 연결시키기.
+        ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.level_image);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                switch (v.getId())
+                {
+                    // [1-1] 클릭된 버튼의 종류에 따라서 Switch Case 처리.
+                    case R.id.level_image :
+                    {
+                        String displayText = "JLPT " + String.valueOf(m_level) + "급을 선택하셨습니다. 레벨 이동.";
+                        Toast.makeText(getContext(), displayText, Toast.LENGTH_SHORT).show();
+                    } break;
+                    default : break;
+                }
+            }
+    });
+
         return rootView;
     }
 
@@ -70,8 +92,12 @@ public class CFragment extends Fragment {
         textView.setText(displayText);
 
         // [2] 화면에 디스플레이 ImageView Update.
-        ImageView imageView = (ImageView) getView().findViewById(R.id.level_image);
-        imageView.setImageResource(imageResource);
+        ImageButton imageButton = (ImageButton) getView().findViewById(R.id.level_image);
+        imageButton.setImageResource(imageResource);
+
+//        // [2] 화면에 디스플레이 ImageView Update.
+//        ImageView imageView = (ImageView) getView().findViewById(R.id.level_image);
+//        imageView.setImageResource(imageResource);
         super.onViewCreated(view, savedInstanceState);
     }
 }
