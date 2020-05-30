@@ -59,6 +59,11 @@ public class CVocabularyDBHelper {
         return m_openHelper.checkAllVocabulary();
     }
 
+    public ArrayList<CVocabulary> requestCheckJLPTLevelVocabulary(int jlptLevel)
+    {
+        return m_openHelper.checkJLPTLvelVocabulary(jlptLevel);
+    }
+
     public void requestExportDBFile()
     {
     }
@@ -127,6 +132,38 @@ public class CVocabularyDBHelper {
         public ArrayList<CVocabulary> checkAllVocabulary()
         {
             String sql = "SELECT * FROM " + m_dbTable;
+
+            ArrayList<CVocabulary> vocabularyList = new ArrayList<> ();
+
+            Cursor result = m_db.rawQuery(sql, null);
+            result.moveToFirst();
+
+            while (!result.isAfterLast())
+            {
+                int column_count = result.getColumnCount();
+
+                int tango_level = result.getInt(0);
+                int tango_no = result.getInt(1);
+                String kanji = result.getString(2);
+                String kana = result.getString(3);
+                String english = result.getString(4);
+                String romaji = result.getString(5);
+                String katakana = result.getString(6);
+                String hiragana = result.getString(7);
+
+                CVocabulary vocabulary = new CVocabulary(tango_level, tango_no, kanji, kana, english, romaji, katakana, hiragana);
+                vocabularyList.add(vocabulary);
+                result.moveToNext();
+            }
+
+            result.close();
+            return vocabularyList;
+        }
+
+        // check jlptLevel vocabulary DB Table.
+        public ArrayList<CVocabulary> checkJLPTLvelVocabulary(int jlptLevel)
+        {
+            String sql = "SELECT * FROM " + m_dbTable + " WHERE tango_level = " + jlptLevel;
 
             ArrayList<CVocabulary> vocabularyList = new ArrayList<> ();
 

@@ -1,5 +1,6 @@
 package com.example.jlpt_vocabulary_memorize.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.jlpt_vocabulary_memorize.CVocabulary;
+import com.example.jlpt_vocabulary_memorize.CVocalbularyInfomationActivity;
 import com.example.jlpt_vocabulary_memorize.R;
+
+import java.util.ArrayList;
 
 public class CFragment extends Fragment {
     private int m_level = 0;
+    private ArrayList<CVocabulary> vocabularyList;
 
     public int getM_level() {
         return m_level;
@@ -24,6 +30,14 @@ public class CFragment extends Fragment {
 
     public void setM_level(int m_level) {
         this.m_level = m_level;
+    }
+
+    public ArrayList<CVocabulary> getVocabularyList() {
+        return vocabularyList;
+    }
+
+    public void setVocabularyList(ArrayList<CVocabulary> vocabularyList) {
+        this.vocabularyList = vocabularyList;
     }
 
     @Nullable
@@ -44,8 +58,11 @@ public class CFragment extends Fragment {
                     // [1-1] 클릭된 버튼의 종류에 따라서 Switch Case 처리.
                     case R.id.level_image :
                     {
-                        String displayText = "JLPT " + String.valueOf(m_level) + "급을 선택하셨습니다. 레벨 이동.";
-                        Toast.makeText(getContext(), displayText, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), CVocalbularyInfomationActivity.class);
+                        startActivity(intent);
+
+//                        String displayText = "JLPT " + String.valueOf(m_level) + "급을 선택하셨습니다. 레벨 이동.";
+//                        Toast.makeText(getContext(), displayText, Toast.LENGTH_SHORT).show();
                     } break;
                     default : break;
                 }
@@ -95,9 +112,8 @@ public class CFragment extends Fragment {
         ImageButton imageButton = (ImageButton) getView().findViewById(R.id.level_image);
         imageButton.setImageResource(imageResource);
 
-//        // [2] 화면에 디스플레이 ImageView Update.
-//        ImageView imageView = (ImageView) getView().findViewById(R.id.level_image);
-//        imageView.setImageResource(imageResource);
         super.onViewCreated(view, savedInstanceState);
     }
+
+
 }
