@@ -64,15 +64,14 @@ public class CVocabularyDBHelper {
         return m_openHelper.checkJLPTLvelVocabulary(jlptLevel);
     }
 
-    public void requestExportDBFile()
-    {
-    }
-
     public CVocabularyDBHelper(Context context)
     {
         this.m_context = context;
         this.m_openHelper = new COpenHelper(m_context, m_dbName, null, m_dbVersion);
-         m_db= m_openHelper.getWritableDatabase();
+
+        // [0] 기존에 존재하는 DB File이 있는지 판단.
+        m_db = null;
+        m_db = m_openHelper.getWritableDatabase();
     }
 
     public class COpenHelper extends SQLiteOpenHelper {
@@ -91,7 +90,7 @@ public class CVocabularyDBHelper {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-                String sql = "CREATE TABLE " + m_dbTable + " (" +
+                String sql = "CREATE TABLE IF NOT EXISTS " + m_dbTable + " (" +
                         "tango_level integer, " +
                         "tango_no integer, " +
                         "kanji varchar(30), " +

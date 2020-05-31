@@ -6,23 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.jlpt_vocabulary_memorize.CVocabulary;
-import com.example.jlpt_vocabulary_memorize.CVocalbularyInfomationActivity;
+import com.example.jlpt_vocabulary_memorize.CVocabularyInfomationActivity;
 import com.example.jlpt_vocabulary_memorize.R;
 
 import java.util.ArrayList;
 
 public class CFragment extends Fragment {
     private int m_level = 0;
-    private ArrayList<CVocabulary> vocabularyList;
+    private ArrayList<CVocabulary> m_vocabularyList;
 
     public int getM_level() {
         return m_level;
@@ -32,12 +30,12 @@ public class CFragment extends Fragment {
         this.m_level = m_level;
     }
 
-    public ArrayList<CVocabulary> getVocabularyList() {
-        return vocabularyList;
+    public ArrayList<CVocabulary> getM_vocabularyList() {
+        return m_vocabularyList;
     }
 
-    public void setVocabularyList(ArrayList<CVocabulary> vocabularyList) {
-        this.vocabularyList = vocabularyList;
+    public void setM_vocabularyList(ArrayList<CVocabulary> m_vocabularyList) {
+        this.m_vocabularyList = m_vocabularyList;
     }
 
     @Nullable
@@ -58,8 +56,10 @@ public class CFragment extends Fragment {
                     // [1-1] 클릭된 버튼의 종류에 따라서 Switch Case 처리.
                     case R.id.level_image :
                     {
-                        Intent intent = new Intent(getActivity(), CVocalbularyInfomationActivity.class);
-                        startActivity(intent);
+                        // [1-2] 버튼클릭시 새로운 화면으로 전환하면서 단어리스트 전달.
+                        Intent intent = new Intent(getActivity(), CVocabularyInfomationActivity.class);
+                        intent.putExtra("vocabulary_list", m_vocabularyList);
+                        getActivity().startActivity(intent);
 
 //                        String displayText = "JLPT " + String.valueOf(m_level) + "급을 선택하셨습니다. 레벨 이동.";
 //                        Toast.makeText(getContext(), displayText, Toast.LENGTH_SHORT).show();
@@ -114,6 +114,4 @@ public class CFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
     }
-
-
 }

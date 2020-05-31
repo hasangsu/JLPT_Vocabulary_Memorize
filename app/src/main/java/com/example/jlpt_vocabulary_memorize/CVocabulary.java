@@ -1,7 +1,10 @@
 package com.example.jlpt_vocabulary_memorize;
 
-public class CVocabulary {
+import java.io.Serializable;
 
+public class CVocabulary implements Serializable {
+
+    private static final long m_serialVersionUID = 1L;
     private int m_level = 0;
     private int m_tangNo = 0;
     private String m_kanji = "";

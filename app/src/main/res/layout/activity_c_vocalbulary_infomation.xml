@@ -6,13 +6,46 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".CVocalbularyInfomationActivity">
+    tools:context=".CVocabularyInfomationActivity">
 
-    <TextView
-        android:id="@+id/level_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="JLPT Vocalbulary Info "
-        android:textSize="40dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/kanji_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kanji Info "
+            android:textSize="40dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/hiragana_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hiragana Info "
+            android:textSize="40dp"
+            android:layout_below="@+id/kanji_text"
+            android:layout_centerHorizontal="true"/>
+        
+        <Button
+            android:id="@+id/left_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Left"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"/>
+
+        <Button
+            android:id="@+id/right_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Right"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
 
 </LinearLayout>
