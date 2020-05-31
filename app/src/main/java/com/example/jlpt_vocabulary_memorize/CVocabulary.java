@@ -2,9 +2,9 @@ package com.example.jlpt_vocabulary_memorize;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class CVocabulary implements Serializable {
 
-    private static final long m_serialVersionUID = 1L;
     private int m_level = 0;
     private int m_tangNo = 0;
     private String m_kanji = "";

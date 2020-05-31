@@ -29,14 +29,18 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static Context m_context;
     public static CVocabularyDBHelper m_vocabularyDBHelper;
     private ViewPager m_viewPager;
     private PagerAdapter m_pageAdapter;
+    private ArrayList<CVocabulary> m_vocabularyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        m_context = this;
 
         // [0] DB File 생성.
         m_vocabularyDBHelper = new CVocabularyDBHelper(MainActivity.this);
@@ -61,12 +65,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        m_vocabularyList = new ArrayList<>();
+        m_vocabularyList = m_vocabularyDBHelper.requestCheckAllVocabulary();
+
         // [2] 처음 실행되면 Splash 이후에 보여질 JLPT 급수 선택 리스트 생성.
         List<Fragment> fragmentList = new ArrayList<>();
         for (int index = 5; 1 <= index; index--) {
             // [2-1] DB에 저장된 급수별 단어리스트를 가져오기.
             ArrayList<CVocabulary> vocabularyList = new ArrayList<>();
-            vocabularyList = m_vocabularyDBHelper.requestCheckJLPTLevelVocabulary(index);
+            vocabularyList = getJLPTLevelVocabulary(index);
 
             // [2-2] 화면에서 선택할 수 있는 JLPT 급수 생성 및 텍스트 세팅.
             CFragment fragment = new CFragment();
@@ -104,4 +111,8 @@ public class MainActivity extends AppCompatActivity {
         return !isFirst;
     }
 
+    public ArrayList<CVocabulary> getJLPTLevelVocabulary(int jlptLevel)
+    {
+        return m_vocabularyDBHelper.requestCheckJLPTLevelVocabulary(jlptLevel);
+    }
 }

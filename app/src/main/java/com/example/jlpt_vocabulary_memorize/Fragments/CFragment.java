@@ -58,11 +58,8 @@ public class CFragment extends Fragment {
                     {
                         // [1-2] 버튼클릭시 새로운 화면으로 전환하면서 단어리스트 전달.
                         Intent intent = new Intent(getActivity(), CVocabularyInfomationActivity.class);
-                        intent.putExtra("vocabulary_list", m_vocabularyList);
+                        intent.putExtra("level", m_level);
                         getActivity().startActivity(intent);
-
-//                        String displayText = "JLPT " + String.valueOf(m_level) + "급을 선택하셨습니다. 레벨 이동.";
-//                        Toast.makeText(getContext(), displayText, Toast.LENGTH_SHORT).show();
                     } break;
                     default : break;
                 }
