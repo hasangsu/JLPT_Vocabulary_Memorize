@@ -8,7 +8,7 @@
     android:gravity="center"
     tools:context=".CVocabularyInfomationActivity">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -16,36 +16,45 @@
             android:id="@+id/kanji_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kanji Info "
+            android:layout_marginTop="150dp"
+            android:text="Kanji Info"
             android:textSize="40dp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
+            android:textStyle="bold"
+            android:textColor="@color/colorRed"
+            app:layout_constraintBottom_toTopOf="@+id/hiragana_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/hiragana_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hiragana Info "
-            android:textSize="40dp"
-            android:layout_below="@+id/kanji_text"
-            android:layout_centerHorizontal="true"/>
-        
+            android:layout_centerHorizontal="true"
+            android:text="Hiragana Info"
+            android:textSize="30dp"
+            app:layout_constraintLeft_toLeftOf = "parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/kanji_text"/>
+
         <Button
             android:id="@+id/button_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Left"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"/>
+            android:text="&lt;"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <Button
             android:id="@+id/button_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Right"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
+            android:text="&gt;"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
